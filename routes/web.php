@@ -1,15 +1,39 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LivreController;
+use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\Auth\LoginController; // Import LoginController
+
+// Custom login routes
+Route::get('/custom-login', [LoginController::class, 'showLoginForm'])->name('custom.login');
+Route::post('/custom-login', [LoginController::class, 'login']);
+Route::post('/custom-logout', [LoginController::class, 'logout'])->name('custom.logout');
+
+
+// Group all routes that require authentication
+Route::middleware(['auth'])->group(function () {
+    // User Routes
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+
+    // Admin Routes with Admin Middleware
+    Route::middleware('admin')->group(function () {
+        Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    });
 });
 
+// Public Routes
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
+
+// Authentication Routes
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-///////////////////////////////////////////////
-Route::resource('livres', LivreController::class); 
-Route::resource('categories', CategorieController::class); 
+// Resource Routes for livres and categories
+Route::resource('livres', LivreController::class);
+Route::resource('categories', CategorieController::class);
