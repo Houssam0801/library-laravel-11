@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'User Dashboard')
+@section('title', 'Login')
 
 @section('content')
     <div class="mt-5">
@@ -31,7 +31,7 @@
             <button type="submit" class="btn btn-primary">Login</button>
 
             <div class="mt-3">
-                <a href="{{ route('register') }}">Don't have an account? Register here.</a>
+                <a href="{{ route('custom.register') }}">Don't have an account? Register here.</a>
             </div>
         </form>
     </div>

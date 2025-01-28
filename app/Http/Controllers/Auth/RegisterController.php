@@ -7,66 +7,53 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request; // Import Request class
+use Illuminate\Support\Facades\Auth; // Import Auth facade
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
     protected function validator(array $data)
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'], // Ensure unique check on email
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // Add role validation if necessary
+            // 'role' => ['required', 'string', 'max:255', 'unique:users,role'], // Uncomment if role needs uniqueness
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
+    public function register(Request $request)
+    {
+        // Validate the request data
+        $this->validator($request->all())->validate();
+
+        // Create the user
+        $user = $this->create($request->all());
+
+        // Log in the user after registration
+        Auth::login($user);
+
+        return redirect($this->redirectTo)->with('message', 'Registration successful! Welcome!');
+    }
+
     protected function create(array $data)
     {
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            // Add role assignment if necessary
+            // 'role' => $data['role'], // Uncomment if assigning role during registration
         ]);
     }
 }

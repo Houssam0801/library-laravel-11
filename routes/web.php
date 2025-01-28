@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LivreController;
 use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController; // Import LoginController
 
 // Custom login routes
@@ -14,6 +15,9 @@ Route::get('/custom-login', [LoginController::class, 'showLoginForm'])->name('cu
 Route::post('/custom-login', [LoginController::class, 'login']);
 Route::post('/custom-logout', [LoginController::class, 'logout'])->name('custom.logout');
 
+// Custom register routes
+Route::get('/custom-register', [RegisterController::class, 'showRegistrationForm'])->name('custom.register');
+Route::post('/custom-register', [RegisterController::class, 'register']);
 
 // Group all routes that require authentication
 Route::middleware(['auth'])->group(function () {
