@@ -39,5 +39,5 @@ Route::get('/', function () {
 Auth::routes();
 
 // Resource Routes for livres and categories
-Route::resource('livres', LivreController::class);
 Route::resource('categories', CategorieController::class);
+Route::resource('livres', LivreController::class);

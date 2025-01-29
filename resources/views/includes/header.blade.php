@@ -16,6 +16,19 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.index') }}">Dashboard</a>
                             </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Catégories
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('categories.index') }}">Liste des catégories</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('categories.create') }}">Créer une catégorie</a>
+                                    </li>
+                                </ul>
+                            </li>
                         @else
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('user.index') }}">User</a>
