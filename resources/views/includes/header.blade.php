@@ -29,6 +29,19 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="livresDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Livres
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('livres.index') }}">Liste des livres</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('livres.create') }}">Créer un livre</a>
+                                    </li>
+                                </ul>
+                            </li>
                         @else
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('user.index') }}">User</a>

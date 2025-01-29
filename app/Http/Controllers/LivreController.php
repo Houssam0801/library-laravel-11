@@ -3,17 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Livre;
+use App\Models\Categorie;
 use Illuminate\Http\Request;
 
 class LivreController extends Controller
 {
     /**
+     * Retrieve all categories.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    private function getCategories()
+    {
+        return Categorie::all()->keyBy('id'); // Convert to associative array
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $categories = $this->getCategories(); // Call the private method
         $livres = Livre::all();
-        return view('livres.index', compact('livres'));
+        return view('livres.index', compact('livres', 'categories'));
     }
 
     /**
@@ -21,7 +33,8 @@ class LivreController extends Controller
      */
     public function create()
     {
-        return view('livres.create');
+        $categories = $this->getCategories();
+        return view('livres.create', compact('categories'));
     }
 
     /**
@@ -34,16 +47,24 @@ class LivreController extends Controller
             'nomauteur' => 'required',
             'description' => 'nullable',
             'date_pub' => 'required|date',
-            'categorie_id' => 'nullable|exists:categories,id', // Ensure categorie_id exists in the categories table
+            'categorie_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Use only the specified fields
+        // Handle file upload
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $imagePath); // Save the image in the public/images folder
+        }
+
         Livre::create([
             'nomlivre' => $request->nomlivre,
             'nomauteur' => $request->nomauteur,
             'description' => $request->description,
             'date_pub' => $request->date_pub,
             'categorie_id' => $request->categorie_id,
+            'image_path' => $imagePath, // Save the image path in the database
         ]);
 
         return redirect()->route('livres.index')->with('success', 'Livre créé avec succès.');
@@ -54,7 +75,9 @@ class LivreController extends Controller
      */
     public function show(Livre $livre)
     {
-        return view('livres.show', compact('livre'));
+        // Retrieve the category associated with the selected livre
+        $category = Categorie::find($livre->categorie_id);
+        return view('livres.show', compact('livre', 'category'));
     }
 
     /**
@@ -62,7 +85,8 @@ class LivreController extends Controller
      */
     public function edit(Livre $livre)
     {
-        return view('livres.edit', compact('livre'));
+        $categories = $this->getCategories();
+        return view('livres.edit', compact('livre', 'categories'));
     }
 
     /**
@@ -70,15 +94,32 @@ class LivreController extends Controller
      */
     public function update(Request $request, Livre $livre)
     {
+        // Validate the incoming request data
         $request->validate([
             'nomlivre' => 'required',
             'nomauteur' => 'required',
             'description' => 'nullable',
             'date_pub' => 'required|date',
-            'categorie_id' => 'nullable|exists:categories,id', // Ensure categorie_id exists in the categories table
+            'categorie_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for the image
         ]);
-
-        // Use only the specified fields
+    
+        // Store the old image path for reference
+        $oldImagePath = $livre->image_path;
+    
+        // Check if a new image was uploaded
+        if ($request->hasFile('image')) {
+            $imagePath = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $imagePath);
+            
+            // Update the image path to the new one
+            $livre->image_path = $imagePath;
+        } else {
+            // If no new image was uploaded, retain the old image path
+            $livre->image_path = $oldImagePath;
+        }
+    
+        // Update the other fields of the livre
         $livre->update([
             'nomlivre' => $request->nomlivre,
             'nomauteur' => $request->nomauteur,
@@ -86,9 +127,10 @@ class LivreController extends Controller
             'date_pub' => $request->date_pub,
             'categorie_id' => $request->categorie_id,
         ]);
-
+    
         return redirect()->route('livres.index')->with('success', 'Livre mis à jour avec succès.');
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -96,6 +138,6 @@ class LivreController extends Controller
     public function destroy(Livre $livre)
     {
         $livre->delete();
-        return redirect()->route('livres.index')->with('success', 'Livre  supprimé avec succès.');
+        return redirect()->route('livres.index')->with('success', 'Livre supprimé avec succès.');
     }
 }
