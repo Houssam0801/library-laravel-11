@@ -16,4 +16,8 @@ class Livre extends Model
         'categorie_id',
         'image_path',
     ];
+    public function categorie()
+    {
+        return $this->belongsTo(Categorie::class);
+    }
 }

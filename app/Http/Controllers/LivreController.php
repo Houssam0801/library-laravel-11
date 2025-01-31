@@ -47,7 +47,7 @@ class LivreController extends Controller
             'nomauteur' => 'required',
             'description' => 'nullable',
             'date_pub' => 'required|date',
-            'categorie_id' => 'nullable|exists:categories,id',
+            'categorie_id' => 'required|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 

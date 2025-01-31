@@ -9,6 +9,8 @@ use App\Http\Controllers\LivreController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BookController;
+
 
 // Custom login routes
 Route::get('/custom-login', [LoginController::class, 'showLoginForm'])->name('custom.login');
@@ -23,6 +25,13 @@ Route::post('/custom-register', [RegisterController::class, 'register']);
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+
+// Show all books with filters
+Route::get('/tousLivres', [BookController::class, 'index'])->name('tousLivres');
+Route::get('/livre/{id}', [BookController::class, 'show'])->name('livre.show');
+Route::get('/livre/{id}/reserver', [BookController::class, 'showReservationForm'])->name('livre.reserver');
+Route::post('/reserver/{livre}', [BookController::class, 'reserver'])->name('reserver');
 
 // Authentication Routes
 Auth::routes();
