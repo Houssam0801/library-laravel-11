@@ -20,7 +20,13 @@
                                 <a class="nav-link" href="{{ route('admin.index') }}">Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.profiles') }}">Profiles</a>
+                                <a class="nav-link" href="{{ route('admin.profile') }}">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.profiles') }}">Manage Profiles</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.reservations') }}">Reservations</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

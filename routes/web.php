@@ -38,8 +38,15 @@ Auth::routes();
 
 // Group all routes that require authentication
 Route::middleware(['auth'])->group(function () {
-    // User Routes
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
+
+    // Edit profile (name and photo)
+    Route::get('/user/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::put('/user/update', [UserController::class, 'update'])->name('user.update');
+
+    // Edit password
+    Route::get('/user/edit-password', [UserController::class, 'editPassword'])->name('user.edit-password');
+    Route::put('/user/update-password', [UserController::class, 'updatePassword'])->name('user.update-password');
 
     // Admin Routes with Admin Middleware
     Route::middleware('admin')->group(function () {
@@ -47,6 +54,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/profiles', [AdminController::class, 'showProfiles'])->name('admin.profiles');
         Route::put('/admin/profiles/{id}/update-role', [AdminController::class, 'updateRole'])->name('admin.updateRole');
         Route::get('/admin/profiles/{id}/view', [AdminController::class, 'viewProfile'])->name('admin.viewProfile');
+        Route::get('/admin/reservations', [AdminController::class, 'showReservations'])->name('admin.reservations');
+        Route::put('/admin/reservations/{id}/update-status', [AdminController::class, 'updateReservationStatus'])->name('admin.updateReservationStatus');
+        
+        // Admin profile and password updates
+        Route::get('/admin/profile', [AdminController::class, 'viewAdminProfile'])->name('admin.profile');
+        Route::get('/admin/profile/edit', [AdminController::class, 'editProfile'])->name('admin.edit-profile');
+        Route::put('/admin/profile/update', [AdminController::class, 'updateProfile'])->name('admin.update-profile');
+        Route::get('/admin/profile/edit-password', [AdminController::class, 'editPassword'])->name('admin.edit-password');
+        Route::put('/admin/profile/update-password', [AdminController::class, 'updatePassword'])->name('admin.update-password');
     });
 });
 
