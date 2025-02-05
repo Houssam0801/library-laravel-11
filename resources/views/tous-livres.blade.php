@@ -40,24 +40,25 @@
         <!-- Books Listing -->
         <div class="row">
             @foreach ($livres as $livre)
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <img src="{{ asset('images/' . $livre->image_path) }}" class="card-img-top"
-                            alt="{{ $livre->nomlivre }}" style="width: 100px; height: 150px;">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $livre->nomlivre }}</h5>
-                            <p class="card-text"><strong>Auteur:</strong> {{ $livre->nomauteur }}</p>
-                            <p class="card-text"><strong>Catégorie:</strong> {{ $livre->categorie->nomcategorie }}</p>
-                            <a href="{{ route('livre.show', $livre->id) }}" class="btn btn-primary">Voir plus</a>
-                            @auth
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 animate__animated animate__fadeIn animate__delay-0.5s text-center customCard">
+                    <img src="{{ asset('images/' . $livre->image_path) }}" class="card-img-top mx-auto mt-3"
+                        alt="{{ $livre->nomlivre }}" style="width: 160px; height: 240px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $livre->nomlivre }}</h5>
+                        <p class="card-text"><strong>Auteur:</strong> {{ $livre->nomauteur }}</p>
+                        <p class="card-text"><strong>Catégorie:</strong> {{ $livre->categorie->nomcategorie }}</p>
+                        <a href="{{ route('livre.show', $livre->id) }}" class="btn btn-primary">Voir plus</a>
+                        @auth
                             <a href="{{ route('livre.reserver', $livre->id) }}" class="btn btn-success">Réserver</a>
-                            @else
-                                <a href="{{ route('login') }}" class="btn btn-warning">Connectez-vous pour réserver</a>
-                            @endauth
-                        </div>
+                        @else
+                            <a href="{{ route('login') }}" class="btn btn-warning">Connectez-vous pour réserver</a>
+                        @endauth
                     </div>
                 </div>
+            </div>
             @endforeach
         </div>
+        {{ $livres->links() }}
     </div>
 @endsection

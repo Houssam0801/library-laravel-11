@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/profiles', [AdminController::class, 'showProfiles'])->name('admin.profiles');
         Route::put('/admin/profiles/{id}/update-role', [AdminController::class, 'updateRole'])->name('admin.updateRole');
         Route::get('/admin/profiles/{id}/view', [AdminController::class, 'viewProfile'])->name('admin.viewProfile');
+        Route::delete('/admin/profiles/{id}/delete', [AdminController::class, 'destroy'])->name('admin.deleteUser');
         Route::get('/admin/reservations', [AdminController::class, 'showReservations'])->name('admin.reservations');
         Route::put('/admin/reservations/{id}/update-status', [AdminController::class, 'updateReservationStatus'])->name('admin.updateReservationStatus');
         

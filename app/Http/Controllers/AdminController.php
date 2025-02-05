@@ -17,7 +17,7 @@ class AdminController extends Controller
 
     public function showProfiles(Request $request)
     {
-        $users = User::all();
+        $users = User::paginate(9);
         return view('admin.profiles', compact('users'));
     }
 
@@ -33,8 +33,23 @@ class AdminController extends Controller
     public function viewProfile($id)
     {
         $user = User::findOrFail($id);
-        return view('admin.detail-profile.blade.php', compact('user'));
+        return view('admin.detail-profile', compact('user'));
     }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+
+        // Vérification pour éviter la suppression de l'admin principal
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.profiles')->with('error', 'Vous ne pouvez pas supprimer un administrateur.');
+        }
+
+        $user->delete();
+
+        return redirect()->route('admin.profiles')->with('success', 'Utilisateur supprimé avec succès.');
+    }
+
 
     // New method to show all reservations
     public function showReservations(Request $request)

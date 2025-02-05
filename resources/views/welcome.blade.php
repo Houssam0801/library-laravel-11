@@ -3,91 +3,66 @@
 @section('title', 'Home')
 
 @section('content')
-<div class="mt-5">
-    <div class="text-center mb-5">
-        <h1 class="display-4">Bienvenue à la Bibliothèque Électronique</h1>
-        <p class="lead">Découvrez et réservez des livres facilement depuis notre collection.</p>
-    </div>
+    <!-- Hero Section with background image and text aligned bottom-right -->
+    <section class="hero-section text-right text-white py-5">
+        <div class="container">
+            <h1 class="display-4 animate__animated animate__fadeIn">Welcome to BookNest</h1>
+            <p class="lead animate__animated animate__fadeIn animate__delay-1s">Discover and reserve books from our vast collection.</p>
+            <a href="{{ route('tousLivres') }}" class="btn btn-light btn-lg animate__animated animate__fadeIn animate__delay-2s">Explore Books</a>
+        </div>
+    </section>
 
-    <!-- Search Section -->
-    <div class="row justify-content-center mb-4">
-        <div class="col-md-8">
-            <form>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Recherchez un livre...">
-                    <button class="btn btn-primary" type="submit">Chercher</button>
+    <!-- Featured Books Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4 animate__animated animate__fadeIn">Featured Books</h2>
+            <div class="row">
+                <!-- Book Card 1 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 animate__animated animate__fadeIn animate__delay-0.5s customCard">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Book 1">
+                        <div class="card-body">
+                            <h5 class="card-title">Book Title 1</h5>
+                            <p class="card-text">Author: Author Name</p>
+                            <p class="card-text">A brief description of the book.</p>
+                            <a href="#" class="btn btn-primary">Reserve</a>
+                        </div>
+                    </div>
                 </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Categories Section -->
-    <div class="row mb-4">
-        <div class="col-12 text-center">
-            <h3 class="mb-3">Catégories Populaires</h3>
-            <div class="d-flex justify-content-center flex-wrap gap-3">
-                <button class="btn btn-outline-primary">Roman</button>
-                <button class="btn btn-outline-primary">Science</button>
-                <button class="btn btn-outline-primary">Histoire</button>
-                <button class="btn btn-outline-primary">Art</button>
-                <button class="btn btn-outline-primary">Technologie</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Book Collection Section -->
-    <div class="row">
-        <!-- Book Card Example -->
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm">
-                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Livre1">
-                <div class="card-body">
-                    <h5 class="card-title">Titre du Livre</h5>
-                    <p class="card-text">Auteur: Auteur Exemple</p>
-                    <p class="card-text">Description courte du livre pour attirer l'attention.</p>
-                    <button class="btn btn-success">Réserver</button>
+                <!-- Book Card 2 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 animate__animated animate__fadeIn animate__delay-1s customCard">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Book 2">
+                        <div class="card-body">
+                            <h5 class="card-title">Book Title 2</h5>
+                            <p class="card-text">Author: Author Name</p>
+                            <p class="card-text">A brief description of the book.</p>
+                            <a href="#" class="btn btn-primary">Reserve</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Duplicate this block for more books -->
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm">
-                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Livre2">
-                <div class="card-body">
-                    <h5 class="card-title">Titre du Livre 2</h5>
-                    <p class="card-text">Auteur: Auteur Exemple 2</p>
-                    <p class="card-text">Une autre description courte.</p>
-                    <button class="btn btn-success">Réserver</button>
+                <!-- Book Card 3 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 animate__animated animate__fadeIn animate__delay-1.5s customCard">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Book 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Book Title 3</h5>
+                            <p class="card-text">Author: Author Name</p>
+                            <p class="card-text">A brief description of the book.</p>
+                            <a href="#" class="btn btn-primary">Reserve</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm">
-                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Livre3">
-                <div class="card-body">
-                    <h5 class="card-title">Titre du Livre 3</h5>
-                    <p class="card-text">Auteur: Auteur Exemple 3</p>
-                    <p class="card-text">Encore une autre description.</p>
-                    <button class="btn btn-success">Réserver</button>
-                </div>
-            </div>
+    <!-- Call to Action Section -->
+    <section class="bg-primary text-white py-5">
+        <div class="container text-center">
+            <h2 class="animate__animated animate__fadeIn">Join Our Community</h2>
+            <p class="animate__animated animate__fadeIn animate__delay-1s">Sign up to get access to exclusive content and updates.</p>
+            <a href="{{ route('custom.register') }}" class="btn btn-light btn-lg animate__animated animate__fadeIn animate__delay-2s">Sign Up</a>
         </div>
-    </div>
-
-    <!-- Newsletter Section -->
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-8 text-center">
-            <h3>Abonnez-vous à notre Newsletter</h3>
-            <p>Recevez les dernières nouvelles et mises à jour directement dans votre boîte mail.</p>
-            <form class="mt-3">
-                <div class="input-group">
-                    <input type="email" class="form-control" placeholder="Entrez votre email">
-                    <button class="btn btn-primary" type="submit">S'abonner</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+    </section>
 @endsection

@@ -24,52 +24,66 @@
         <hr>
 
         <!-- Tableau des réservations -->
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead class="table-dark text-center">
-                    <tr>
-                        <th>Utilisateur</th>
-                        <th>Livre</th>
-                        <th>Date de début</th>
-                        <th>Date de fin</th>
-                        <th>Statut</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($reservations as $reservation)
+        @if ($reservations->isEmpty())
+            <div class="alert alert-warning text-center">
+                Aucune réservation trouvée.
+            </div>
+        @else
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-dark text-center">
                         <tr>
-                            <td>{{ $reservation->user->name }}</td>
-                            <td>{{ $reservation->livre->nomlivre }}</td>
-                            <td>{{ $reservation->date_debut }}</td>
-                            <td>{{ $reservation->date_fin }}</td>
-                            <td class="text-center">
-                                <span class="badge
+                            <th>Utilisateur</th>
+                            <th>Livre</th>
+                            <th>Date de début</th>
+                            <th>Date de fin</th>
+                            <th>Statut</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($reservations as $reservation)
+                            <tr>
+                                <td>{{ $reservation->user->name }}</td>
+                                <td>{{ optional($reservation->livre)->nomlivre ?? 'Livre supprimé' }}</td>
+                                <td>{{ $reservation->date_debut }}</td>
+                                <td>{{ $reservation->date_fin }}</td>
+                                <td class="text-center">
+                                    <span
+                                        class="badge
                                     @if ($reservation->status == 'approved') bg-success
                                     @elseif($reservation->status == 'rejected') bg-danger
                                     @else bg-warning @endif">
-                                    {{ ucfirst($reservation->status) }}
-                                </span>
-                            </td>
-                            <td>
-                                <form action="{{ route('admin.updateReservationStatus', $reservation->id) }}"
-                                    method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="input-group">
-                                        <select name="status" class="form-select">
-                                            <option value="pending" {{ $reservation->status == 'pending' ? 'selected' : '' }}>En attente</option>
-                                            <option value="approved" {{ $reservation->status == 'approved' ? 'selected' : '' }}>Approuvé</option>
-                                            <option value="rejected" {{ $reservation->status == 'rejected' ? 'selected' : '' }}>Rejeté</option>
-                                        </select>
-                                        <button type="submit" class="btn btn-primary">Mettre à jour</button>
-                                    </div>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                                        {{ ucfirst($reservation->status) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <form action="{{ route('admin.updateReservationStatus', $reservation->id) }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="input-group">
+                                            <select name="status" class="form-select">
+                                                <option value="pending"
+                                                    {{ $reservation->status == 'pending' ? 'selected' : '' }}>En attente
+                                                </option>
+                                                <option value="approved"
+                                                    {{ $reservation->status == 'approved' ? 'selected' : '' }}>Approuvé
+                                                </option>
+                                                <option value="rejected"
+                                                    {{ $reservation->status == 'rejected' ? 'selected' : '' }}>Rejeté
+                                                </option>
+                                            </select>
+                                            <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
+
     </div>
 @endsection

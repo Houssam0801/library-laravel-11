@@ -4,12 +4,26 @@
 
 @section('content')
     <div class="container mt-4">
-        <h1 class="mb-3">Gérer les Profils</h1>
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <h1 class="mb-3">📋 Gérer les Profils</h1>
         <p class="text-muted">Bienvenue dans la gestion des profils administrateurs ! Ici, vous pouvez gérer les utilisateurs.</p>
 
         <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead class="table-dark">
+            <table class="table table-bordered">
+                <thead class="table-dark text-center">
                     <tr>
                         <th>ID</th>
                         <th>Nom</th>
@@ -35,13 +49,22 @@
                                     <button type="submit" class="btn btn-primary btn-sm">Enregistrer</button>
                                 </form>
                             </td>
-                            <td>
-                                <a href="{{ route('admin.viewProfile', $user->id) }}" class="btn btn-info btn-sm">Voir plus</a>
+                            <td class="text-center">
+                                <a href="{{ route('admin.viewProfile', $user->id) }}" class="btn btn-info btn-sm"><i class="lni lni-eye"></i></a>
+                                <!-- Bouton Supprimer -->
+                            <form action="{{ route('admin.deleteUser', $user->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur ? Cette action est irréversible.')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    X
+                                 </button>
+                            </form>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+            {{ $users->links() }}
         </div>
     </div>
 @endsection

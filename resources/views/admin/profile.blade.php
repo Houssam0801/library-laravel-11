@@ -1,10 +1,10 @@
 @extends('layout')
 
-@section('title', 'Profil Admin')
+@section('title', 'Profile Admin')
 
 @section('content')
     <div class="container mt-4">
-        <h1 class="mb-4 text-center">Profil Admin</h1>
+        <h1 class="mb-4 text-center">Profile Admin</h1>
 
         <!-- Informations du Profil -->
         <div class="card mb-4 shadow-sm">

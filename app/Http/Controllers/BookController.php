@@ -23,7 +23,7 @@ class BookController extends Controller
             })
             ->paginate(9);
 
-        $categories = Categorie::all();
+        $categories = Categorie::paginate(9);
 
         return view('tous-livres', compact('livres', 'categories'));
     }
@@ -42,8 +42,6 @@ class BookController extends Controller
         return view('reservation', compact('livre'));
     }
 
-
-    // Handle book reservation
     // Handle book reservation
     public function reserver(Request $request, $livreId)
     {
@@ -57,6 +55,7 @@ class BookController extends Controller
         // Check if the user has already reserved 3 books and hasn't returned them yet
         $activeReservations = Reservation::where('user_id', $userId)
             ->where('date_fin', '>=', now()->format('Y-m-d')) // Books not yet returned
+            ->where('status', '<>', 'Rejected') // Exclude rejected reservations
             ->count();
 
         if ($activeReservations >= 3) {

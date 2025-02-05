@@ -24,7 +24,7 @@ class LivreController extends Controller
     public function index()
     {
         $categories = $this->getCategories(); // Call the private method
-        $livres = Livre::all();
+        $livres = Livre::paginate(9);
         return view('livres.index', compact('livres', 'categories'));
     }
 

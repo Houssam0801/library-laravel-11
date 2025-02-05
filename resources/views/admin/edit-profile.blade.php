@@ -39,7 +39,7 @@
                                 <input type="file" class="form-control" id="profile_photo" name="profile_photo">
                                 @if ($user->profile_photo)
                                     <div class="mt-3 text-center">
-                                        <img src="{{ asset($user->profile_photo) }}" alt="Photo de Profil" class="img-thumbnail rounded-circle shadow" style="width: 150px; height: 150px;">
+                                        <img src="{{ asset($user->profile_photo) }}" alt="pic de Profil" class="img-thumbnail rounded-circle shadow" style="width: 150px; height: 150px;">
                                     </div>
                                 @endif
                             </div>

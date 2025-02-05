@@ -15,14 +15,12 @@
         @endif
 
         <div class="card shadow-lg border-0 rounded-4">
-            <!-- Card Header -->
             <div class="card-header text-white text-center bg-primary rounded-top-4">
                 <h2 class="mb-0">📖 Réserver un Livre</h2>
             </div>
 
             <div class="card-body p-4">
                 <div class="row g-4 align-items-start">
-                    <!-- Left Side: Book Details -->
                     <div class="col-md-5 text-center">
                         <img src="{{ asset('images/' . $livre->image_path) }}" class="img-fluid rounded-3 shadow-sm mb-3"
                             alt="{{ $livre->nomlivre }}" style="max-width: 55%; height: auto;">
@@ -32,7 +30,6 @@
                         <p class="text-muted"><strong>Date de publication :</strong> {{ $livre->date_pub }}</p>
                     </div>
 
-                    <!-- Right Side: Reservation Form -->
                     <div class="col-md-7">
                         @auth
                             <div class="alert alert-light border">
@@ -64,6 +61,14 @@
                                 </button>
                             </form>
                         </div>
+
+                        <!-- Retour Button -->
+                        <div class="mt-3">
+                            <a href="{{ route('tousLivres') }}" class="btn btn-secondary w-100 fw-bold rounded-3">
+                                ⬅️ Retour à tous les livres
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>
