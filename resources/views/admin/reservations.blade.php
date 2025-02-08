@@ -6,27 +6,11 @@
     <div class="container mt-4">
         <h1 class="mb-4 text-center">Gérer les Réservations</h1>
 
-        <!-- Formulaire de recherche par statut -->
-        <div class="d-flex justify-content-end mb-4">
-            <form action="{{ route('admin.reservations') }}" method="GET" class="d-flex">
-                <div class="me-2">
-                    <label for="status" class="form-label">Filtrer par statut :</label>
-                    <select name="status" id="status" class="form-select" onchange="this.form.submit()">
-                        <option value="">Tous</option>
-                        <option value="pending" {{ $status == 'pending' ? 'selected' : '' }}>En attente</option>
-                        <option value="approved" {{ $status == 'approved' ? 'selected' : '' }}>Approuvé</option>
-                        <option value="rejected" {{ $status == 'rejected' ? 'selected' : '' }}>Rejeté</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-
-        <hr>
-
-        <!-- Tableau des réservations -->
-        @if ($reservations->isEmpty())
+        {{-- Pending Reservations Table --}}
+        <h2>Réservations en Attente</h2>
+        @if ($pendingReservations->isEmpty())
             <div class="alert alert-warning text-center">
-                Aucune réservation trouvée.
+                Aucune réservation en attente trouvée.
             </div>
         @else
             <div class="table-responsive">
@@ -42,7 +26,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($reservations as $reservation)
+                        @foreach ($pendingReservations as $reservation)
                             <tr>
                                 <td>{{ $reservation->user->name }}</td>
                                 <td>{{ optional($reservation->livre)->nomlivre ?? 'Livre supprimé' }}</td>
@@ -51,9 +35,9 @@
                                 <td class="text-center">
                                     <span
                                         class="badge
-                                    @if ($reservation->status == 'approved') bg-success
-                                    @elseif($reservation->status == 'rejected') bg-danger
-                                    @else bg-warning @endif">
+                                        @if ($reservation->status == 'approved') bg-success
+                                        @elseif($reservation->status == 'rejected') bg-danger
+                                        @else bg-warning @endif">
                                         {{ ucfirst($reservation->status) }}
                                     </span>
                                 </td>
@@ -64,18 +48,112 @@
                                         @method('PUT')
                                         <div class="input-group">
                                             <select name="status" class="form-select">
-                                                <option value="pending"
-                                                    {{ $reservation->status == 'pending' ? 'selected' : '' }}>En attente
-                                                </option>
-                                                <option value="approved"
-                                                    {{ $reservation->status == 'approved' ? 'selected' : '' }}>Approuvé
-                                                </option>
-                                                <option value="rejected"
-                                                    {{ $reservation->status == 'rejected' ? 'selected' : '' }}>Rejeté
-                                                </option>
+                                                <option value="pending" selected>En attente</option>
+                                                <option value="approved">Approuvé</option>
+                                                <option value="rejected">Rejeté</option>
                                             </select>
                                             <button type="submit" class="btn btn-primary">Mettre à jour</button>
                                         </div>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
+
+        {{-- Approved Reservations Table --}}
+        <h2 class="mt-5">Réservations Approuvées</h2>
+        @if ($approvedReservations->isEmpty())
+            <div class="alert alert-warning text-center">
+                Aucune réservation approuvée trouvée.
+            </div>
+        @else
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-success text-center">
+                        <tr>
+                            <th>Utilisateur</th>
+                            <th>Livre</th>
+                            <th>Date de début</th>
+                            <th>Date de fin</th>
+                             <th>Statut</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($approvedReservations as $reservation)
+                            <tr>
+                                <td>{{ $reservation->user->name }}</td>
+                                <td>{{ optional($reservation->livre)->nomlivre ?? 'Livre supprimé' }}</td>
+                                <td>{{ $reservation->date_debut }}</td>
+                                <td>{{ $reservation->date_fin }}</td>
+                                 <td class="text-center">
+                                    <span
+                                        class="badge
+                                        @if ($reservation->status == 'approved') bg-success
+                                        @elseif($reservation->status == 'rejected') bg-danger
+                                        @else bg-warning @endif">
+                                        {{ ucfirst($reservation->status) }}
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <form action="{{ route('admin.updateReservationStatus', $reservation->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="status" value="pending">
+                                        <button type="submit" class="btn btn-secondary">Remettre en Attente</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
+
+        {{-- Rejected Reservations Table --}}
+        <h2 class="mt-5">Réservations Rejetées</h2>
+        @if ($rejectedReservations->isEmpty())
+            <div class="alert alert-warning text-center">
+                Aucune réservation rejetée trouvée.
+            </div>
+        @else
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-danger text-center">
+                        <tr>
+                            <th>Utilisateur</th>
+                            <th>Livre</th>
+                            <th>Date de début</th>
+                            <th>Date de fin</th>
+                             <th>Statut</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($rejectedReservations as $reservation)
+                            <tr>
+                                <td>{{ $reservation->user->name }}</td>
+                                <td>{{ optional($reservation->livre)->nomlivre ?? 'Livre supprimé' }}</td>
+                                <td>{{ $reservation->date_debut }}</td>
+                                <td>{{ $reservation->date_fin }}</td>
+                                 <td class="text-center">
+                                    <span
+                                        class="badge
+                                        @if ($reservation->status == 'approved') bg-success
+                                        @elseif($reservation->status == 'rejected') bg-danger
+                                        @else bg-warning @endif">
+                                        {{ ucfirst($reservation->status) }}
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <form action="{{ route('admin.updateReservationStatus', $reservation->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="status" value="pending">
+                                        <button type="submit" class="btn btn-secondary">Remettre en Attente</button>
                                     </form>
                                 </td>
                             </tr>

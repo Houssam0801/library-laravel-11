@@ -12,10 +12,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="{{ asset('css/style1.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/style2.css') }}">
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     @if (Auth::check() && Auth::user()->isAdmin())
         <div class="wrapper">
             @include('includes.sidebar')
@@ -25,8 +24,7 @@
         </div>
     @else
         @include('includes.header')
-
-        <div class="container p-3">
+        <div class="container p-3 flex-grow-1">
             @yield('content')
         </div>
         @include('includes.footer')

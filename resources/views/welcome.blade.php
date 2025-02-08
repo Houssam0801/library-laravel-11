@@ -17,42 +17,21 @@
         <div class="container">
             <h2 class="text-center mb-4 animate__animated animate__fadeIn">Featured Books</h2>
             <div class="row">
-                <!-- Book Card 1 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 animate__animated animate__fadeIn animate__delay-0.5s customCard">
-                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Book 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Book Title 1</h5>
-                            <p class="card-text">Author: Author Name</p>
-                            <p class="card-text">A brief description of the book.</p>
-                            <a href="#" class="btn btn-primary">Reserve</a>
+                @foreach ($featuredBooks as $book)
+                    <!-- Book Card -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 animate__animated animate__fadeIn animate__delay-0.5s customCard">
+                            <img src="{{ asset('images/' . $book->image_path) }}" class="card-img-top mx-auto mt-3"
+                            alt="{{ $book->nomlivre }}" style="width: 160px; height: 240px; object-fit: cover;">                            <div class="card-body">
+                                <h5 class="card-title">{{ $book->nomlivre }}</h5>
+                                <p class="card-text">Auteur: {{ $book->nomauteur }}</p>
+                                <p class="card-text">{{ Str::words($book->description, 14, '...')  ?? 'Pas de description' }}</p>
+                                <a href="{{ route('livre.show', $book->id) }}" class="btn btn-primary">Voir plus</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Book Card 2 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 animate__animated animate__fadeIn animate__delay-1s customCard">
-                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Book 2">
-                        <div class="card-body">
-                            <h5 class="card-title">Book Title 2</h5>
-                            <p class="card-text">Author: Author Name</p>
-                            <p class="card-text">A brief description of the book.</p>
-                            <a href="#" class="btn btn-primary">Reserve</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Book Card 3 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 animate__animated animate__fadeIn animate__delay-1.5s customCard">
-                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Book 3">
-                        <div class="card-body">
-                            <h5 class="card-title">Book Title 3</h5>
-                            <p class="card-text">Author: Author Name</p>
-                            <p class="card-text">A brief description of the book.</p>
-                            <a href="#" class="btn btn-primary">Reserve</a>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
+
             </div>
         </div>
     </section>

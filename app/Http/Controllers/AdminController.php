@@ -52,18 +52,22 @@ class AdminController extends Controller
 
 
     // New method to show all reservations
-    public function showReservations(Request $request)
+    public function showReservations()
     {
-        $status = $request->input('status');
-
-        // Fetch reservations based on the status filter
-        $reservations = Reservation::with(['user', 'livre'])
-            ->when($status, function ($query, $status) {
-                return $query->where('status', $status);
-            })
+        // Fetch reservations for each status
+        $pendingReservations = Reservation::with(['user', 'livre'])
+            ->where('status', 'pending')
             ->get();
 
-        return view('admin.reservations', compact('reservations', 'status'));
+        $approvedReservations = Reservation::with(['user', 'livre'])
+            ->where('status', 'approved')
+            ->get();
+
+        $rejectedReservations = Reservation::with(['user', 'livre'])
+            ->where('status', 'rejected')
+            ->get();
+
+        return view('admin.reservations', compact('pendingReservations', 'approvedReservations', 'rejectedReservations'));
     }
 
     // New method to update reservation status
