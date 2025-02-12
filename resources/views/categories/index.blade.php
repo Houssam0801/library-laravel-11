@@ -3,16 +3,30 @@
 @section('title', 'Liste des catégories')
 
 @section('content')
-    <div class="container">
-        <h1>Catégories</h1>
-        <a href="{{ route('categories.create') }}" class="btn btn-primary mb-3">Créer une Nouvelle Catégorie</a>
+    <div class="container mt-4">
+        {{-- Page Title --}}
+        <div class="text-center mb-5 animate__animated animate__fadeInDown">
+            <h1 class="display-4 fw-bold">📚 Liste des Catégories</h1>
+            <p class="lead text-muted animate__animated animate__fadeIn">Gérez les catégories de livres disponibles.</p>
+        </div>
+
+        {{-- Create Category Button --}}
+        <div class="text-center mb-4 animate__animated animate__fadeInLeft">
+            <a href="{{ route('categories.create') }}" class="btn btn-primary shadow animate__animated animate__pulse animate__infinite">
+                <i class="fas fa-plus me-2"></i>Créer une Nouvelle Catégorie
+            </a>
+        </div>
+
+        {{-- Success Alert --}}
         @if (session('success'))
-            <div class="alert alert-success text-center">
+            <div class="alert alert-success text-center animate__animated animate__fadeIn">
                 {{ session('success') }}
             </div>
         @endif
-        <div class="table-responsive">
-            <table class="table table-bordered">
+
+        {{-- Categories Table --}}
+        <div class="table-responsive animate__animated animate__fadeInUp">
+            <table class="table table-bordered table-hover shadow">
                 <thead class="table-dark text-center">
                     <tr>
                         <th>ID</th>
@@ -23,22 +37,28 @@
                 </thead>
                 <tbody>
                     @foreach ($categories as $category)
-                        <tr>
+                        <tr class="animate__animated animate__fadeIn">
                             <td>{{ $category->id }}</td>
                             <td>{{ $category->nomcategorie }}</td>
                             <td>{{ $category->description ?? 'Pas de description' }}</td>
+                            <td class="text-center">
+                                {{-- View Button --}}
+                                <a href="{{ route('categories.show', $category) }}" class="btn btn-info btn-sm shadow me-2">
+                                    <i class="fas fa-eye"></i>
+                                </a>
 
-                            <td>
-                                <a href="{{ route('categories.show', $category) }}" class="btn btn-info"><i
-                                        class="lni lni-eye"></i></a>
-                                <a href="{{ route('categories.edit', $category) }}" class="btn btn-warning"><i
-                                        class="lni lni-hammer"></i></a>
-                                <form action="{{ route('categories.destroy', $category) }}" method="POST"
-                                    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette categorie ?')"
-                                    style="display:inline;">
+                                {{-- Edit Button --}}
+                                <a href="{{ route('categories.edit', $category) }}" class="btn btn-warning btn-sm shadow me-2">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+
+                                {{-- Delete Button --}}
+                                <form action="{{ route('categories.destroy', $category) }}" method="POST" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">X</button>
+                                    <button type="submit" class="btn btn-danger btn-sm shadow">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -46,7 +66,10 @@
                 </tbody>
             </table>
         </div>
-        {{ $categories->links() }}
 
+        {{-- Pagination --}}
+        <div class="mt-4 animate__animated animate__fadeInUp">
+            {{ $categories->links() }}
+        </div>
     </div>
 @endsection

@@ -1,23 +1,39 @@
 @extends('layout')
 
-@section('title', 'Modifier categorie')
+@section('title', 'Modifier catégorie')
 
 @section('content')
-<div class="container">
-    <h1>Edit Category</h1>
-    <form action="{{ route('categories.update', $category) }}" method="POST">
-        @csrf
-        @method('PUT')
-        <div class="form-group">
-            <label for="nomcategorie">Category Name</label>
-            <input type="text" name="nomcategorie" id="nomcategorie" class="form-control" value="{{ old('nomcategorie', $category->nomcategorie) }}" required>
+    <div class="container mt-4">
+        {{-- Page Title --}}
+        <div class="text-center mb-5 animate__animated animate__fadeInDown">
+            <h1 class="display-4 fw-bold">📚 Modifier la Catégorie</h1>
+            <p class="lead text-muted animate__animated animate__fadeIn">Modifiez les détails de la catégorie.</p>
         </div>
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea name="description" id="description" class="form-control" rows="3">{{ old('description', $category->description) }}</textarea>
+
+        {{-- Edit Category Form --}}
+        <div class="card shadow animate__animated animate__fadeInUp">
+            <div class="card-body">
+                <form action="{{ route('categories.update', $category) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <label for="nomcategorie" class="form-label">Nom de la Catégorie</label>
+                        <input type="text" name="nomcategorie" id="nomcategorie" class="form-control" value="{{ old('nomcategorie', $category->nomcategorie) }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="description" id="description" class="form-control" rows="3">{{ old('description', $category->description) }}</textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success shadow animate__animated animate__pulse animate__infinite">
+                            <i class="fas fa-save me-2"></i>Mettre à jour
+                        </button>
+                        <a href="{{ route('categories.index') }}" class="btn btn-secondary shadow">
+                            <i class="fas fa-times me-2"></i>Annuler
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
-        <button type="submit" class="btn btn-success">Update</button>
-        <a class="btn btn-secondary" href="{{ route('categories.index') }}">Cancel</a>
-    </form>
-</div>
+    </div>
 @endsection

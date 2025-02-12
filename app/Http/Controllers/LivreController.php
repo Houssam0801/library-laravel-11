@@ -52,8 +52,8 @@ class LivreController extends Controller
         ]);
 
         // Handle file upload
-        $imagePath = null;
-        if ($request->hasFile('image')) {
+        $imagePath = 'default-book.jpg';
+            if ($request->hasFile('image')) {
             $imagePath = time() . '.' . $request->image->extension();
             $request->image->move(public_path('images'), $imagePath); // Save the image in the public/images folder
         }
@@ -126,6 +126,7 @@ class LivreController extends Controller
             'description' => $request->description,
             'date_pub' => $request->date_pub,
             'categorie_id' => $request->categorie_id,
+            'image_path' => $imagePath,
         ]);
     
         return redirect()->route('livres.index')->with('success', 'Livre mis à jour avec succès.');

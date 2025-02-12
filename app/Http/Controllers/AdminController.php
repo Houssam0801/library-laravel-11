@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Livre;
+use App\Models\Categorie;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +14,14 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
-        return view('admin.index')->with('message', 'Hello Admin! This is your dashboard.');
+        return view('admin.index', [
+            'userCount' => User::count(),
+            'reservationCount' => Reservation::count(),
+            'bookCount' => Livre::count(),
+            'categoryCount' => Categorie::count(),
+            'latestReservations' => Reservation::latest()->take(5)->get(),
+            'latestUsers' => User::latest()->take(5)->get(),
+        ]);
     }
 
     public function showProfiles(Request $request)
