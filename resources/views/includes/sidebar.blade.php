@@ -1,4 +1,4 @@
-<aside id="sidebar">
+<aside id="sidebar" class="animate__animated animate__slideInLeft">
     <div class="d-flex">
         <button class="toggle-btn" type="button">
             <i class="lni lni-grid-alt"></i>
@@ -43,7 +43,7 @@
         <!-- Categories Dropdown -->
         <li class="sidebar-item">
             <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                data-bs-target="#categories" aria-expanded="false" aria-controls="categories">
+               data-bs-target="#categories" aria-expanded="false" aria-controls="categories">
                 <i class="lni lni-list"></i>
                 <span>Catégories</span>
             </a>
@@ -60,7 +60,7 @@
         <!-- Livres Dropdown -->
         <li class="sidebar-item">
             <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                data-bs-target="#livres" aria-expanded="false" aria-controls="livres">
+               data-bs-target="#livres" aria-expanded="false" aria-controls="livres">
                 <i class="lni lni-library"></i>
                 <span>Livres</span>
             </a>
@@ -75,7 +75,7 @@
         </li>
         <li class="sidebar-item">
             <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                data-bs-target="#utilisateur" aria-expanded="false" aria-controls="utilisateur">
+               data-bs-target="#utilisateur" aria-expanded="false" aria-controls="utilisateur">
                 <i class="lni lni-eye"></i>
                 <span>Exploration Utilisateur</span>
             </a>

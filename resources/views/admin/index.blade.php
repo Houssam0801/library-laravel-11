@@ -125,7 +125,6 @@
                 <table class="table table-bordered table-hover shadow">
                     <thead class="table-info text-center">
                         <tr>
-                            <th>ID</th>
                             <th>Nom</th>
                             <th>Email</th>
                             <th>Rôle</th>
@@ -134,7 +133,6 @@
                     <tbody>
                         @foreach ($latestUsers as $user)
                             <tr class="animate__animated animate__fadeIn">
-                                <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td class="text-center">

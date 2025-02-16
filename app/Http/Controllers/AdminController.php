@@ -9,6 +9,9 @@ use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationApprovedMail;
+use App\Mail\ReservationRejectedMail;
 
 class AdminController extends Controller
 {
@@ -85,6 +88,13 @@ class AdminController extends Controller
         $reservation = Reservation::findOrFail($id);
         $reservation->status = $request->status;
         $reservation->save();
+
+        // Send email based on the new status
+        if ($reservation->status === 'approved') {
+            Mail::to($reservation->user->email)->send(new ReservationApprovedMail($reservation));
+        } elseif ($reservation->status === 'rejected') {
+            Mail::to($reservation->user->email)->send(new ReservationRejectedMail($reservation));
+        }
 
         return redirect()->route('admin.reservations')->with('success', 'Reservation status updated successfully!');
     }

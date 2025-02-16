@@ -9,23 +9,13 @@ use Illuminate\Http\Request;
 class LivreController extends Controller
 {
     /**
-     * Retrieve all categories.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    private function getCategories()
-    {
-        return Categorie::all()->keyBy('id'); // Convert to associative array
-    }
-
-    /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = $this->getCategories(); // Call the private method
-        $livres = Livre::paginate(9);
-        return view('livres.index', compact('livres', 'categories'));
+        // Charger les livres avec leurs catégories associées
+        $livres = Livre::with('categorie')->paginate(9);
+        return view('livres.index', compact('livres'));
     }
 
     /**
@@ -33,7 +23,8 @@ class LivreController extends Controller
      */
     public function create()
     {
-        $categories = $this->getCategories();
+        // Récupérer toutes les catégories
+        $categories = Categorie::all();
         return view('livres.create', compact('categories'));
     }
 
@@ -51,20 +42,21 @@ class LivreController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Handle file upload
+        // Gérer l'upload de l'image
         $imagePath = 'default-book.jpg';
-            if ($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $imagePath = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images'), $imagePath); // Save the image in the public/images folder
+            $request->image->move(public_path('images'), $imagePath);
         }
 
+        // Créer un livre et l'associer à une catégorie
         Livre::create([
             'nomlivre' => $request->nomlivre,
             'nomauteur' => $request->nomauteur,
             'description' => $request->description,
             'date_pub' => $request->date_pub,
             'categorie_id' => $request->categorie_id,
-            'image_path' => $imagePath, // Save the image path in the database
+            'image_path' => $imagePath, // Sauvegarder le chemin de l'image
         ]);
 
         return redirect()->route('livres.index')->with('success', 'Livre créé avec succès.');
@@ -75,8 +67,7 @@ class LivreController extends Controller
      */
     public function show(Livre $livre)
     {
-        // Retrieve the category associated with the selected livre
-        $category = Categorie::find($livre->categorie_id);
+        $category = $livre->categorie; // Utilisation de la relation définie dans le modèle
         return view('livres.show', compact('livre', 'category'));
     }
 
@@ -85,7 +76,8 @@ class LivreController extends Controller
      */
     public function edit(Livre $livre)
     {
-        $categories = $this->getCategories();
+        // Récupérer toutes les catégories
+        $categories = Categorie::all();
         return view('livres.edit', compact('livre', 'categories'));
     }
 
@@ -94,44 +86,40 @@ class LivreController extends Controller
      */
     public function update(Request $request, Livre $livre)
     {
-        // Validate the incoming request data
         $request->validate([
             'nomlivre' => 'required',
             'nomauteur' => 'required',
             'description' => 'nullable',
             'date_pub' => 'required|date',
             'categorie_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for the image
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
-        // Store the old image path for reference
+
+        // Stocker le chemin de l'ancienne image
         $oldImagePath = $livre->image_path;
-    
-        // Check if a new image was uploaded
+
+        // Vérifier si une nouvelle image est téléchargée
         if ($request->hasFile('image')) {
             $imagePath = time() . '.' . $request->image->extension();
             $request->image->move(public_path('images'), $imagePath);
-            
-            // Update the image path to the new one
             $livre->image_path = $imagePath;
         } else {
-            // If no new image was uploaded, retain the old image path
+            // Si aucune nouvelle image, garder l'ancienne
             $livre->image_path = $oldImagePath;
         }
-    
-        // Update the other fields of the livre
+
+        // Mettre à jour les autres champs du livre
         $livre->update([
             'nomlivre' => $request->nomlivre,
             'nomauteur' => $request->nomauteur,
             'description' => $request->description,
             'date_pub' => $request->date_pub,
             'categorie_id' => $request->categorie_id,
-            'image_path' => $imagePath,
+            'image_path' => $livre->image_path,  // Mettre à jour le chemin de l'image
         ]);
-    
+
         return redirect()->route('livres.index')->with('success', 'Livre mis à jour avec succès.');
     }
-    
 
     /**
      * Remove the specified resource from storage.

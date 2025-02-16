@@ -13,6 +13,9 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('tousLivres') ? 'active' : '' }}" href="{{ route('tousLivres') }}">Livres</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact Us</a>
+                    </li>
 
                     @if (Auth::check())
                         @if (!Auth::user()->isAdmin())

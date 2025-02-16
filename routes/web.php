@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LivreController;
 use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
@@ -24,6 +25,8 @@ Route::post('/custom-register', [RegisterController::class, 'register']);
 
 // Public Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/contact', [ContactUsController::class, 'index'])->name('contact');
+Route::post('/contact/send', [ContactUsController::class, 'send'])->name('contactSend');
 
 
 // Show all books with filters

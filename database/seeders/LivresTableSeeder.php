@@ -15,7 +15,7 @@ class LivresTableSeeder extends Seeder
     {
         // Livre::truncate();  //Deletes all existing books before inserting new ones
         // Livre::factory()->count(20)->create(); // Always adds 20 new books
-        Livre::factory(30)->create();
+        Livre::factory(100)->create();
 
     }
 }

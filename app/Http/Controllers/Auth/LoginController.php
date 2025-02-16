@@ -25,7 +25,7 @@ class LoginController extends Controller
             return redirect()->route('admin.index')->with('message', 'Hello Admin! This is your dashboard.');
         }
 
-        return redirect()->route('user.index')->with('message', 'Hello User!');
+        return redirect()->route('home');
     }
 
     public function logout(Request $request)

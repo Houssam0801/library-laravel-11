@@ -9,6 +9,12 @@ class Categorie extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'nomcategorie','description',
+        'nomcategorie',
+        'description',
     ];
+    
+    public function livres()
+    {
+        return $this->hasMany(Livre::class);
+    }
 }
