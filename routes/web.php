@@ -53,13 +53,21 @@ Route::middleware(['auth'])->group(function () {
     // Admin Routes with Admin Middleware
     Route::middleware('admin')->group(function () {
         Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+        // Manage profiles
         Route::get('/admin/profiles', [AdminController::class, 'showProfiles'])->name('admin.profiles');
         Route::put('/admin/profiles/{id}/update-role', [AdminController::class, 'updateRole'])->name('admin.updateRole');
         Route::get('/admin/profiles/{id}/view', [AdminController::class, 'viewProfile'])->name('admin.viewProfile');
         Route::delete('/admin/profiles/{id}/delete', [AdminController::class, 'destroy'])->name('admin.deleteUser');
+        // Manage reservations
         Route::get('/admin/reservations', [AdminController::class, 'showReservations'])->name('admin.reservations');
         Route::put('/admin/reservations/{id}/update-status', [AdminController::class, 'updateReservationStatus'])->name('admin.updateReservationStatus');
-        
+        Route::delete('/admin/reservations/{id}/retour', [AdminController::class, 'retourAndDelete'])->name('admin.retourAndDelete');
+        // Contact messages
+        Route::get('/admin/contact-messages', [ContactUsController::class, 'showContactMessages'])->name('admin.contactMessages');
+        Route::delete('/admin/contact-messages/{id}/delete', [ContactUsController::class, 'destroyMessage'])->name('contact.delete');
+        Route::get('/admin/contact-messages/{id}', [ContactUsController::class, 'showMessage'])->name('contact.show');
+
+
         // Admin profile and password updates
         Route::get('/admin/profile', [AdminController::class, 'viewAdminProfile'])->name('admin.profile');
         Route::get('/admin/profile/edit', [AdminController::class, 'editProfile'])->name('admin.edit-profile');

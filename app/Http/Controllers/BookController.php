@@ -23,7 +23,7 @@ class BookController extends Controller
             })
             ->paginate(9);
 
-        $categories = Categorie::paginate(9);
+        $categories = Categorie::all();
 
         return view('tous-livres', compact('livres', 'categories'));
     }
@@ -58,9 +58,9 @@ class BookController extends Controller
             ->where('status', '<>', 'Rejected') // Exclude rejected reservations
             ->count();
 
-        if ($activeReservations >= 3) {
+        if ($activeReservations >= 1) {
             return redirect()->back()->withErrors([
-                'limit' => 'Vous avez déjà 3 livres en cours de réservation. Vous devez en retourner un avant d\'en réserver un autre.'
+                'limit' => 'Vous avez déjà un livre en cours de réservation. Vous devez en retourner un avant d\'en réserver un autre.'
             ]);
         }
 
@@ -81,9 +81,9 @@ class BookController extends Controller
         $daysDifference = $dateDebut->diff($dateFin)->days;
 
         // Check if the reservation period exceeds 30 days
-        if ($daysDifference > 30) {
+        if ($daysDifference > 15) {
             return redirect()->back()
-                ->withErrors(['date_fin' => 'La période de réservation ne peut pas dépasser 30 jours.'])
+                ->withErrors(['date_fin' => 'La période de réservation ne peut pas dépasser 15 jours.'])
                 ->withInput();
         }
 

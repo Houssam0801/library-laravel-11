@@ -69,7 +69,7 @@ class AdminController extends Controller
         // Fetch reservations for each status
         $pendingReservations = Reservation::with(['user', 'livre'])
             ->where('status', 'pending')
-            ->get();
+            ->paginate(4);
 
         $approvedReservations = Reservation::with(['user', 'livre'])
             ->where('status', 'approved')
@@ -99,6 +99,14 @@ class AdminController extends Controller
         return redirect()->route('admin.reservations')->with('success', 'Reservation status updated successfully!');
     }
 
+    // New method to delete a reservation
+    public function retourAndDelete($id)
+    {
+        $reservation = Reservation::findOrFail($id);
+        $reservation->delete();
+
+        return redirect()->route('admin.reservations')->with('success', 'Livre a été retourné et la réservation a été supprimée.');
+    }
 
     public function viewAdminProfile()
     {

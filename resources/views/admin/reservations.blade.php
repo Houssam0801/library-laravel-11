@@ -10,6 +10,12 @@
             <p class="lead text-muted animate__animated animate__fadeIn">Bienvenue dans la gestion des réservations !</p>
         </div>
 
+        @if (session('success'))
+            <div class="alert alert-success text-center animate__animated animate__fadeIn">
+                {{ session('success') }}
+            </div>
+        @endif
+
         {{-- Pending Reservations Table --}}
         <h2 class="mb-4 animate__animated animate__fadeInLeft">Réservations en Attente</h2>
         @if ($pendingReservations->isEmpty())
@@ -46,7 +52,8 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <form action="{{ route('admin.updateReservationStatus', $reservation->id) }}" method="POST">
+                                    <form action="{{ route('admin.updateReservationStatus', $reservation->id) }}"
+                                        method="POST">
                                         @csrf
                                         @method('PUT')
                                         <div class="input-group">
@@ -63,6 +70,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{ $pendingReservations->links() }}
             </div>
         @endif
 
@@ -101,14 +109,16 @@
                                         {{ ucfirst($reservation->status) }}
                                     </span>
                                 </td>
-                                <td class="text-center">
-                                    <form action="{{ route('admin.updateReservationStatus', $reservation->id) }}" method="POST">
+                                <td class="text-center px-5">
+                                    <!-- Form to delete the reservation -->
+                                    <form action="{{ route('admin.retourAndDelete', $reservation->id) }}" method="POST"
+                                        onsubmit="return confirm('Confirmez-vous le retour de ce livre ? Cette réservation sera supprimée.');">
                                         @csrf
-                                        @method('PUT')
-                                        <input type="hidden" name="status" value="pending">
-                                        <button type="submit" class="btn btn-secondary shadow">Remettre en Attente</button>
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-warning shadow">Retour</button>
                                     </form>
                                 </td>
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -152,7 +162,8 @@
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    <form action="{{ route('admin.updateReservationStatus', $reservation->id) }}" method="POST">
+                                    <form action="{{ route('admin.updateReservationStatus', $reservation->id) }}"
+                                        method="POST">
                                         @csrf
                                         @method('PUT')
                                         <input type="hidden" name="status" value="pending">
