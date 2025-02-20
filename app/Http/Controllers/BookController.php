@@ -52,10 +52,10 @@ class BookController extends Controller
 
         $userId = Auth::id();
 
-        // Check if the user has already reserved 3 books and hasn't returned them yet
+        // Check if the user has already reserved 1 book and hasn't returned yet
         $activeReservations = Reservation::where('user_id', $userId)
             ->where('date_fin', '>=', now()->format('Y-m-d')) // Books not yet returned
-            ->where('status', '<>', 'Rejected') // Exclude rejected reservations
+            ->where('status', '<>', 'Rejected')
             ->count();
 
         if ($activeReservations >= 1) {
@@ -110,5 +110,14 @@ class BookController extends Controller
         ]);
 
         return redirect()->route('tousLivres')->with('success', 'Votre réservation a été enregistrée.');
+    }
+
+    public function getAllReservations()
+    {
+        // Get all Reservations with their user, livre
+        $reservations = Reservation::with(['user', 'livre'])->get();
+
+        // Return as JSON
+        return response()->json($reservations);
     }
 }

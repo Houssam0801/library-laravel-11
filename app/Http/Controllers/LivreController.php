@@ -129,4 +129,13 @@ class LivreController extends Controller
         $livre->delete();
         return redirect()->route('livres.index')->with('success', 'Livre supprimé avec succès.');
     }
+
+    public function getAllLivres()
+    {
+        // Get all livres with their categories without pagination
+        $livres = Livre::with('categorie')->get();
+
+        // Return as JSON
+        return response()->json($livres);
+    }
 }
