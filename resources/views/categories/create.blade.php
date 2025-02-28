@@ -10,6 +10,18 @@
             <p class="lead text-muted animate__animated animate__fadeIn">Ajoutez une nouvelle catégorie de livres.</p>
         </div>
 
+        {{-- Display Validation Errors --}}
+        @if ($errors->any())
+            <div class="alert alert-danger my-2 animate__animated animate__fadeIn">
+                <strong>⚠️ Erreurs de validation :</strong>
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         {{-- Create Category Form --}}
         <div class="card shadow animate__animated animate__fadeInUp">
             <div class="card-body">
@@ -17,14 +29,15 @@
                     @csrf
                     <div class="mb-3">
                         <label for="nomcategorie" class="form-label">Nom de la Catégorie</label>
-                        <input type="text" name="nomcategorie" id="nomcategorie" class="form-control" required>
+                        <input type="text" name="nomcategorie" id="nomcategorie" class="form-control" >
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
                         <textarea name="description" id="description" class="form-control" rows="3"></textarea>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary shadow animate__animated animate__pulse animate__infinite">
+                        <button type="submit"
+                            class="btn btn-primary shadow animate__animated animate__pulse animate__infinite">
                             <i class="fas fa-plus me-2"></i>Créer
                         </button>
                     </div>
@@ -32,8 +45,8 @@
             </div>
         </div>
 
-         {{-- Back to List Button --}}
-         <div class="text-center mt-4 animate__animated animate__fadeInUp">
+        {{-- Back to List Button --}}
+        <div class="text-center mt-4 animate__animated animate__fadeInUp">
             <a href="{{ route('categories.index') }}" class="btn btn-secondary shadow">
                 <i class="fas fa-arrow-left me-2"></i>Retour à la liste
             </a>

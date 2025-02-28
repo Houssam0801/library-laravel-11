@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Categorie;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreCategorieRequest;
+use App\Http\Requests\UpdateCategorieRequest;
 
 class CategorieController extends Controller
 {
@@ -27,12 +29,8 @@ class CategorieController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategorieRequest $request)
     {
-        $request->validate([
-            'nomcategorie' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
 
         Categorie::create($request->all());
         return redirect()->route('categories.index')->with('success', 'Category created successfully!');
@@ -43,6 +41,8 @@ class CategorieController extends Controller
      */
     public function show(Categorie $category)
     {
+        // Eager load the livres associated with the category
+        $category->load('livres');
         return view('categories.show', compact('category'));
     }
 
@@ -52,12 +52,8 @@ class CategorieController extends Controller
         return view('categories.edit', compact('category'));
     }
 
-    public function update(Request $request, Categorie $category)
+    public function update(UpdateCategorieRequest $request, Categorie $category)
     {
-        $request->validate([
-            'nomcategorie' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
 
         $category->update($request->all());
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');

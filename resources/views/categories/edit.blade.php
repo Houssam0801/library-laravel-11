@@ -10,6 +10,18 @@
             <p class="lead text-muted animate__animated animate__fadeIn">Modifiez les détails de la catégorie.</p>
         </div>
 
+        {{-- Display Validation Errors --}}
+        @if ($errors->any())
+            <div class="alert alert-danger my-2 animate__animated animate__fadeIn">
+                <strong>⚠️ Erreurs de validation :</strong>
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         {{-- Edit Category Form --}}
         <div class="card shadow animate__animated animate__fadeInUp">
             <div class="card-body">

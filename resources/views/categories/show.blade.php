@@ -12,10 +12,36 @@
 
         {{-- Category Details Card --}}
         <div class="card shadow animate__animated animate__fadeInUp">
-            <div class="card-body">
-                <h5 class="card-title">ID: {{ $category->id }}</h5>
-                <p class="card-text"><strong>Nom :</strong> {{ $category->nomcategorie }}</p>
+            <div class="card-body p-4">
+                <h3 class="card-title text-center">ID: {{ $category->id }}</h3>
+                <hr>
+                <h4 class="card-text"><strong>Nom :</strong> {{ $category->nomcategorie }}</h4>
                 <p class="card-text"><strong>Description :</strong> {{ $category->description ?? 'Aucune description' }}</p>
+
+                {{-- Livres Associated with Category --}}
+                <div class="mt-4">
+                    <h5><strong>Livres de cette catégorie:</strong></h5>
+                    <div class="row">
+                        @forelse($category->livres as $livre)
+                            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
+                                <a href="{{ route('livres.show', $livre) }}" class="text-decoration-none">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="ms-3">
+                                                <p class="fw-bold mb-1">{{ $livre->nomlivre }}</p>
+                                                <p class="text-muted mb-0">{{ $livre->nomauteur }}</p>
+                                                <p class="text-muted mb-0">{{ $livre->date_pub }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        @empty
+                            <p>Aucun livre disponible dans cette catégorie.</p>
+                        @endforelse
+                    </div>
+                </div>
+
                 <div class="text-center">
                     <a href="{{ route('categories.edit', $category) }}" class="btn btn-warning shadow me-2">
                         <i class="fas fa-edit me-2"></i>Modifier

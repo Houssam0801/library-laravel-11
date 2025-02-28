@@ -10,6 +10,18 @@
             <p class="lead text-muted animate__animated animate__fadeIn">Ajoutez un nouveau livre à la bibliothèque.</p>
         </div>
 
+        {{-- Display Validation Errors --}}
+        @if ($errors->any())
+            <div class="alert alert-danger my-2 animate__animated animate__fadeIn">
+                <strong>⚠️ Erreurs de validation :</strong>
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         {{-- Create Book Form --}}
         <div class="card shadow animate__animated animate__fadeInUp">
             <div class="card-body">
@@ -17,11 +29,11 @@
                     @csrf
                     <div class="mb-3">
                         <label for="nomlivre" class="form-label">Nom du Livre</label>
-                        <input type="text" name="nomlivre" id="nomlivre" class="form-control" required>
+                        <input type="text" name="nomlivre" id="nomlivre" class="form-control">
                     </div>
                     <div class="mb-3">
                         <label for="nomauteur" class="form-label">Nom de l'Auteur</label>
-                        <input type="text" name="nomauteur" id="nomauteur" class="form-control" required>
+                        <input type="text" name="nomauteur" id="nomauteur" class="form-control">
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
@@ -45,7 +57,8 @@
                         <input type="file" name="image" id="image" class="form-control" accept="image/*">
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary shadow animate__animated animate__pulse animate__infinite">
+                        <button type="submit"
+                            class="btn btn-primary shadow animate__animated animate__pulse animate__infinite">
                             <i class="fas fa-plus me-2"></i>Créer
                         </button>
                         <a href="{{ route('livres.index') }}" class="btn btn-secondary shadow">

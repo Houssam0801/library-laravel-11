@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Livre;
 use App\Models\Categorie;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreLivreRequest;
+use App\Http\Requests\UpdateLivreRequest;
 
 class LivreController extends Controller
 {
@@ -14,6 +16,7 @@ class LivreController extends Controller
     public function index()
     {
         // Charger les livres avec leurs catégories associées
+
         $livres = Livre::with('categorie')->paginate(9);
         return view('livres.index', compact('livres'));
     }
@@ -31,16 +34,8 @@ class LivreController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreLivreRequest $request)
     {
-        $request->validate([
-            'nomlivre' => 'required',
-            'nomauteur' => 'required',
-            'description' => 'nullable',
-            'date_pub' => 'required|date',
-            'categorie_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
 
         // Gérer l'upload de l'image
         $imagePath = 'default-book.jpg';
@@ -56,7 +51,7 @@ class LivreController extends Controller
             'description' => $request->description,
             'date_pub' => $request->date_pub,
             'categorie_id' => $request->categorie_id,
-            'image_path' => $imagePath, // Sauvegarder le chemin de l'image
+            'image_path' => $imagePath,
         ]);
 
         return redirect()->route('livres.index')->with('success', 'Livre créé avec succès.');
@@ -84,17 +79,8 @@ class LivreController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Livre $livre)
+    public function update(UpdateLivreRequest $request, Livre $livre)
     {
-        $request->validate([
-            'nomlivre' => 'required',
-            'nomauteur' => 'required',
-            'description' => 'nullable',
-            'date_pub' => 'required|date',
-            'categorie_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
         // Stocker le chemin de l'ancienne image
         $oldImagePath = $livre->image_path;
 
@@ -115,7 +101,7 @@ class LivreController extends Controller
             'description' => $request->description,
             'date_pub' => $request->date_pub,
             'categorie_id' => $request->categorie_id,
-            'image_path' => $livre->image_path,  // Mettre à jour le chemin de l'image
+            'image_path' => $livre->image_path,
         ]);
 
         return redirect()->route('livres.index')->with('success', 'Livre mis à jour avec succès.');
